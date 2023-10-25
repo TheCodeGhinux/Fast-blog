@@ -1,0 +1,67 @@
+{
+  "editor.accessibilityPageSize": 8,
+  "workbench.colorCustomizations": {},
+  "workbench.colorTheme": "Theme Mix",
+  "editor.fontWeight": "normal",
+  "git.autofetch": true,
+  "workbench.startupEditor": "none",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+
+  "emmet.triggerExpansionOnTab": true,
+  "editor.minimap.enabled": false,
+  "prettier.jsxSingleQuote": true,
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.cursorBlinking": "expand",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "highlight-matching-tag.styles": {
+    "opening": {
+      "left": {
+        "custom": {
+          "borderWidth": "0 0 0 3px",
+          "borderStyle": "solid",
+          "borderColor": "yellow",
+          "borderRadius": "5px"
+        }
+      },
+      "right": {
+        "custom": {
+          "borderWidth": "0 3px 0 0",
+          "borderStyle": "solid",
+          "borderColor": "yellow",
+          "borderRadius": "5px"
+        }
+      }
+    }
+  },
+  "markdown-preview-enhanced.previewTheme": "github-dark.css",
+  "git.enableSmartCommit": true,
+  "markdown.preview.fontSize": 14,
+  "editor.guides.bracketPairs": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "vsicons.presets.foldersAllDefaultIcon": true,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "editor.linkedEditing": true,
+  "files.autoSave": "afterDelay",
+  "prettier.endOfLine": "auto",
+  "cSpell.userWords": ["cloudinary", "fanta"],
+  "editor.fontFamily": "Dank Mono",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "C_Cpp.default.compilerPath": ""
+}

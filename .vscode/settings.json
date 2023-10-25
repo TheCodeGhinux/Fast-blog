@@ -1,0 +1,8 @@
+{
+  "python.analysis.extraPaths": ["./db", "./app/blog"],
+  "cSpell.words": ["sqlalchemy"],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none"
+}
