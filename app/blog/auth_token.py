@@ -7,7 +7,9 @@ from jose import JWTError, jwt
 from  blog.db.database import SessionLocal, engine, get_db
 from sqlalchemy.orm import Session
 
-from blog import schema
+from blog import schema, models
+# from blog.models import User
+# import models
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -17,9 +19,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 def get_user(username: str, db: Session = Depends(get_db)):
-    if username in db:
-        user_dict = db[username]
-        return schema.UserInDB(**user_dict)
+    user = db.query(models.User).filter(models.User.username == username).first()
+    return user.id
 
 
 def create_access_token(data: dict):
@@ -37,7 +38,6 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    # Verify jwt token
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -46,7 +46,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         token_data = schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    # user = get_user(db, username=token_data.username)
-    # if user is None:
-    #     raise credentials_exception
-    return
+    user = get_user( username=token_data.username, db=db)
+    if user is None:
+        raise credentials_exception
+    return user

@@ -7,15 +7,21 @@ from blog.hashing import Hash
 def get_all_users():
   pass
 
-def get_user(user_id, db: Session):
+def get_user_by_id(user_id, db: Session):
   user = db.query(models.User).filter(models.User.id == user_id).first()
+  if not user:
+      raise HTTPException(status_code=404, detail=f"User does not exist")
+  return user
+
+def get_user(current_user, db: Session):
+  user = db.query(models.User).filter(models.User.id == current_user).first()
   if not user:
       raise HTTPException(status_code=404, detail=f"User does not exist")
   return user
 
 def create_user(req, response, db: Session):
   hashedPassword = Hash.bcrypt(req.password)
-  new_user = models.User(firstname=req.firstname, lastname=req.lastname, username=req.username, password=hashedPassword)
+  new_user = models.User(firstname=req.firstname, lastname=req.lastname, username=req.username, email= req.email, password=hashedPassword)
   db.add(new_user)
   db.commit()
   db.refresh(new_user)

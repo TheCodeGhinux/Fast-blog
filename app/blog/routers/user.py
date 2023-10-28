@@ -4,8 +4,10 @@ from blog import schema
 from  blog.db.database import SessionLocal, engine, get_db
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+from blog.auth_token import get_current_user
 
 from blog.repository import user
+
 
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -19,5 +21,9 @@ def create_user(req: schema.User, response: Response, db: Session = Depends(get_
     return user.create_user(req, response, db)
 
 @router.get('/{user_id}', response_model=schema.ShowUser, )
-def get_user(user_id: int, db: Session = Depends(get_db)):
-    return user.get_user(user_id, db)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    return user.get_user_by_id(user_id, db)
+
+@router.get('/', response_model=schema.ShowUser, )
+def get_user(current_user = Depends(get_current_user), db: Session = Depends(get_db)):
+    return user.get_user(current_user, db)

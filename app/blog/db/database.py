@@ -3,10 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://codeghinux:password@localhost:5432/fast-blog"
 
-SQLALCHEMY_DATABASE_URL = "postgresql://codeghinux:0661TAWRXjxUdD234Mo7eXRACHDy2mWy@dpg-cksgk96nfb1c73epeakg-a.oregon-postgres.render.com:5432/tcgblog"
+SQLALCHEMY_DATABASE_URL = "postgresql://codeghinux:pxphiAocHNbJyyXaNwgGuB822kegJ0yE@dpg-ckubcaramefc73fb4ib0-a.oregon-postgres.render.com:5432/tcgblog_iu1u"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
