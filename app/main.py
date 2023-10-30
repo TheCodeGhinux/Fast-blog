@@ -5,9 +5,12 @@ from blog.routers import user, blog, article, auth
 from blog import models
 from blog.db.database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
 
 app = FastAPI()
+# Load .env file
+load_dotenv()
 
 origins = ["*"]
 

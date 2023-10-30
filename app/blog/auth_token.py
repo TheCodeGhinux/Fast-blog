@@ -1,25 +1,29 @@
+import os
 from datetime import datetime, timedelta
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from  blog.db.database import SessionLocal, engine, get_db
+from blog.db.database import SessionLocal, engine, get_db
 from sqlalchemy.orm import Session
 
 from blog import schema, models
-# from blog.models import User
-# import models
+from dotenv import load_dotenv
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+load_dotenv()
+
+ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY")
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
+
 def get_user(username: str, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == username).first()
+    user = db.query(models.User).filter(
+        models.User.username == username).first()
     return user.id
 
 
@@ -37,7 +41,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -46,7 +50,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         token_data = schema.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user( username=token_data.username, db=db)
+    user = get_user(username=token_data.username, db=db)
     if user is None:
         raise credentials_exception
     return user

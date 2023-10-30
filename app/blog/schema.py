@@ -1,6 +1,13 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+class ImageBase(BaseModel):
+    url: str
+
+
+class ImageCreate(ImageBase):
+    pass
+
 class UserBase(BaseModel):
     firstname: str
     lastname: str
@@ -11,11 +18,13 @@ class UserBase(BaseModel):
 class BlogBase(BaseModel):
     title: str
     description: str
+    image: Optional[ImageCreate]
 
 class ArticleBase(BaseModel):
     blog_id: int
     title: str
     content: str
+    image: Optional[ImageCreate]
 
 class ArticleUpdateBase(BaseModel):
     title: str
@@ -46,6 +55,7 @@ class User(UserBase):
 class Blog(BlogBase):
     id: int
     creator_id: int
+    image: Optional[ImageCreate]
     articles: List[ArticleBase] = []
     blog_likes: List["BlogLike"] = []
 
@@ -55,6 +65,7 @@ class Blog(BlogBase):
 class Article(ArticleBase):
     id: int
     blog_id: int
+    image: Optional[ImageCreate]
     article_comments: List[CommentBase] = []
     article_likes: List["ArticleLike"] = []
 
@@ -86,6 +97,13 @@ class ShowArticle(BaseModel):
     title: str
     body: str
     creator: ShowUser
+
+    class Config:
+        orm_mode = True
+
+
+class Image(ImageBase):
+    id: int
 
     class Config:
         orm_mode = True

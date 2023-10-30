@@ -1,31 +1,9 @@
+import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from blog.db.database import Base
-
-
-# class Post(Base):
-#     __tablename__ = 'posts'
-
-#     id = Column(Integer, primary_key= True, index=True)
-#     title = Column(String)
-#     body = Column(String)
-#     creator_id = Column(Integer, ForeignKey("users.id"))
-
-#     creator = relationship("User", back_populates="posts")
-
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     firstname = Column(String, index=True)
-#     lastname = Column(String, index=True)
-#     username = Column(String, unique=True, index=True)
-#     password = Column(String)
-#     # is_active = Column(Boolean, default=True)
-
-#     posts = relationship("Post", back_populates="creator")
+Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'users'
@@ -35,6 +13,11 @@ class User(Base):
     email = Column(String, unique=True)
     username = Column(String, unique=True)
     password = Column(String)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    image_id = Column(Integer, ForeignKey('images.id'))
+    image = relationship("Image")
 
     blogs = relationship("Blog", back_populates="user")
     articles = relationship("Article", back_populates="user")
@@ -50,6 +33,9 @@ class Blog(Base):
     title = Column(String)
     description = Column(String)
     creator_id = Column(Integer, ForeignKey('users.id'))
+    image_id = Column(Integer, ForeignKey('images.id'))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship("User", back_populates="blogs")
     articles = relationship("Article", back_populates="blog", cascade="all, delete")
@@ -63,6 +49,9 @@ class Article(Base):
     content = Column(Text)
     blog_id = Column(Integer, ForeignKey('blogs.id'))
     creator_id = Column(Integer, ForeignKey('users.id'))
+    image_id = Column(Integer, ForeignKey('images.id'))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship("User", back_populates="articles")
     blog = relationship("Blog", back_populates="articles")
@@ -86,6 +75,8 @@ class Comment(Base):
     content = Column(Text)
     article_id = Column(Integer, ForeignKey('articles.id'))
     creator_id = Column(Integer, ForeignKey('users.id'))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship("User", back_populates="comments")
     comment_likes = relationship("CommentLike", back_populates="comment")
@@ -110,3 +101,10 @@ class CommentLike(Base):
 
     user = relationship("User", back_populates="comment_likes")
     comment = relationship("Comment", back_populates="comment_likes")
+
+
+class Image(Base):
+    __tablename__ = 'images'
+    id = Column(Integer, primary_key=True, index=True)
+    url = Column(String)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)

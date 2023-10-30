@@ -2,20 +2,15 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
-# SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-# SQLALCHEMY_DATABASE_URL = "postgresql://codeghinux:password@localhost:5432/fast-blog"
+load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = "postgresql://codeghinux:pxphiAocHNbJyyXaNwgGuB822kegJ0yE@dpg-ckubcaramefc73fb4ib0-a.oregon-postgres.render.com:5432/tcgblog_iu1u"
+SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
 )
-
-# if os.getenv('DATABASE_URL'):
-#     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
-# else:
-#     SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASEDIR, 'instance', 'app.db')}"
 
 # engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
